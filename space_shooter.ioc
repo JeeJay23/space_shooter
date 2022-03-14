@@ -1,4 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
+ADC.ContinuousConvMode=DISABLE
+ADC.IPParameters=Resolution,ContinuousConvMode
+ADC.Resolution=ADC_RESOLUTION_10B
 Dma.ADC.0.Direction=DMA_PERIPH_TO_MEMORY
 Dma.ADC.0.Instance=DMA1_Channel1
 Dma.ADC.0.MemDataAlignment=DMA_MDATAALIGN_HALFWORD

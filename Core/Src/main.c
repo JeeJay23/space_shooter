@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* USER CODE END Includes */
 
@@ -125,14 +126,14 @@ int main(void)
 	HAL_ADC_Start_DMA(&hadc, &AD_RES, 1);
 
 	// Input and output variables for value mapping
-	int input_start = 0;
-	int input_end = 4095;
+	int input_start = 1023; // inverted start and end because joystick is flipped.
+	int input_end = 0;
 	int output_start = 0;
 	int output_end = 255;
 	int input = AD_RES;
 	int output;
 
-	// Map value from 0 - 4095 to 0 - 255
+	// Map value from 0 - 1023 to 0 - 255
 	double slope = 1.0 * (output_end - output_start) / (input_end - input_start);
 	output = output_start + slope * (input - input_start);
 
@@ -141,21 +142,24 @@ int main(void)
 	sprintf(sOutput,"%d", output);
 
 	// Read buttons
-	char buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
-	char buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
+	int buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
+	int buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
 
-	// Button array variables
-	char sButtonDown[1];
+	// Buttons are active high, so invert them with some bitwise magic.
+	buttonUp = buttonUp ^ 1;
+	buttonDown = buttonDown ^ 1;
+
+	// Button character array variables for printing via UART.
 	char sButtonUp[1];
+	char sButtonDown[1];
 
-	// Convert to character array to print via UART.
-	sprintf(sButtonDown,"%d", buttonDown);
+	// Convert int to character array to print via UART.
 	sprintf(sButtonUp,"%d", buttonUp);
+	sprintf(sButtonDown,"%d", buttonDown);
 
-	// Print to UART for debugging.
 	debugPrintln(sOutput);
-	debugPrintln(sButtonDown);
 	debugPrintln(sButtonUp);
+	debugPrintln(sButtonDown);
 
 	HAL_Delay(100);
   }
@@ -224,7 +228,7 @@ static void MX_ADC_Init(void)
   */
   hadc.Instance = ADC1;
   hadc.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-  hadc.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc.Init.Resolution = ADC_RESOLUTION_10B;
   hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
   hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
