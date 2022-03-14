@@ -18,11 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <stdio.h>
-#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -121,9 +121,10 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+	// Start ADC converter to read joystick
 	HAL_ADC_Start_DMA(&hadc, &AD_RES, 1);
 
-	// Input and output for value mapping
+	// Input and output variables for value mapping
 	int input_start = 0;
 	int input_end = 4095;
 	int output_start = 0;
@@ -138,7 +139,24 @@ int main(void)
 	// Convert to character array to print via UART
 	char sOutput[8];
 	sprintf(sOutput,"%d", output);
+
+	// Read buttons
+	char buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
+	char buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
+
+	// Button array variables
+	char sButtonDown[1];
+	char sButtonUp[1];
+
+	// Convert to character array to print via UART.
+	sprintf(sButtonDown,"%d", buttonDown);
+	sprintf(sButtonUp,"%d", buttonUp);
+
+	// Print to UART for debugging.
 	debugPrintln(sOutput);
+	debugPrintln(sButtonDown);
+	debugPrintln(sButtonUp);
+
 	HAL_Delay(100);
   }
   /* USER CODE END 3 */
@@ -377,6 +395,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Button_down_Pin Button_up_Pin */
+  GPIO_InitStruct.Pin = Button_down_Pin|Button_up_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
 
