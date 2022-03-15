@@ -71,13 +71,8 @@ static void MX_ADC_Init(void);
 /* USER CODE BEGIN 0 */
 void debugPrintln(char _out[]){
 	HAL_UART_Transmit(&huart2, (uint8_t *) _out, strlen(_out), 10);
-<<<<<<< HEAD
-	char newline[2] = "\r\n";
-	HAL_UART_Transmit(&huart2, (uint8_t *) newline, 2, 10);
-=======
 	char newline[4] = "\r\n";
 	HAL_UART_Transmit(&huart2, (uint8_t *) newline, 4, 10);
->>>>>>> merge_dev
 }
 
 /* USER CODE END 0 */
