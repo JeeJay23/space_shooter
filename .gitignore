@@ -2,6 +2,14 @@
 #
 Debug/
 
+# cubeIDE
+.settings/
+*.metadata
+*.launch
+Debug/
+.mxproject
+
+
 # Prerequisites
 *.d
 
