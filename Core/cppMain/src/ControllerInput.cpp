@@ -17,3 +17,11 @@ uint8_t ControllerInput::getJoyStick(){
 	// Output 0 - 255
 	return map(*AD_RES, 1023, 0, 0, 255);
 }
+
+ControllerState* ControllerInput::getControllerState(){
+	ControllerState *state  = new ControllerState();
+	state->joystickX = getJoyStick();
+	state->buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
+	state->buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
+	return state;
+}

@@ -116,15 +116,15 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   // Calibrate The ADC On Power-Up For Better Accuracy
   HAL_ADCEx_Calibration_Start(&hadc);
-  GameEngine engine;
-  engine.run();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
+	  cppMain(&hspi1, &hadc, &AD_RES);
+
+	 /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
