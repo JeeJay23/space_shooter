@@ -1,5 +1,13 @@
 # https://github.com/github/gitignore/blob/master/C.gitignore
 
+# cubeIDE
+.settings/
+*.metadata
+*.launch
+Debug/
+.mxproject
+
+
 # Prerequisites
 *.d
 
