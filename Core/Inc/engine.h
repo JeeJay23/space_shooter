@@ -15,7 +15,9 @@ public:
 	engine(SPI_HandleTypeDef*);
 	~engine();
 
-	void spiTrans();
+	void drawSprite();
+	void drawLine();
+	void playAudio();
 
 private:
 	SPI_HandleTypeDef *spi1;

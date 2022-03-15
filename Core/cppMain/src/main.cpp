@@ -11,14 +11,14 @@
 
 void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer)
 {
-	engine engine(hspi);
+	//engine engine(hspi);
 	ControllerInput controller(handle, buffer);
 
 	for(;;){
 		//engine.spiTrans();
 
 		// Read controller values.
-		ControllerState *state = controller.getControllerState();
+		controller.getControllerState();
 	}
 }
 

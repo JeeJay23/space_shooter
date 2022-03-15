@@ -14,13 +14,14 @@ private:
 private:
 	ADC_HandleTypeDef *hadc;
 	uint32_t *AD_RES;
-	bool buttonUp;
-	bool buttonDown;
-	uint8_t joyStickX;
+
 
 public:
     ControllerInput(ADC_HandleTypeDef*, uint32_t*);
-    ControllerState* getControllerState();
+    void getControllerState();
+	bool buttonUp;
+	bool buttonDown;
+	uint8_t joyStickX;
 };
 
 
