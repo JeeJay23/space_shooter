@@ -1,7 +1,6 @@
 #include "ControllerInput.h"
 
-ControllerInput::ControllerInput(){
-
+ControllerInput::ControllerInput(ADC_HandleTypeDef *handle, uint32_t *buffer) : hadc(handle), AD_RES(buffer){
 }
 
 double ControllerInput::map(int input, int input_start, int input_end, int output_start, int output_end){
@@ -9,6 +8,12 @@ double ControllerInput::map(int input, int input_start, int input_end, int outpu
 	return  output_start + slope * (input - input_start);
 }
 
-uint8_t ControllerInput::getJoyStick(){
+void ControllerInput::updateJoyStickValue(){
+	HAL_ADC_Start_DMA(hadc, AD_RES, 1);
+}
 
+uint8_t ControllerInput::getJoyStick(){
+	// Input from 1023 to 0 (inverted because joystick is inverted)
+	// Output 0 - 255
+	return map(*AD_RES, 1023, 0, 0, 255);
 }
