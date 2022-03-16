@@ -14,15 +14,16 @@ void ControllerInput::updateJoyStickValue(){
 	HAL_ADC_Start_DMA(hadc, AD_RES, 1);
 }
 
-uint8_t ControllerInput::getJoyStick(){
+double ControllerInput::getJoyStick(){
 	// Input from 1023 to 0 (inverted because joystick is inverted)
 	// Output 0 - 255
-	return map(*AD_RES, 1023, 0, 0, 255);
+	return map(*AD_RES, 1023, 0, -180, 180);
 }
 
 void ControllerInput::getControllerState(){
 
-	ControllerState *state  = new ControllerState();
+	//ControllerState *state  = new ControllerState();
+	updateJoyStickValue();
 	joyStickX = getJoyStick();
 	buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
 	buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);

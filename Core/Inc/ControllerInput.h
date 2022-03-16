@@ -9,7 +9,7 @@ class ControllerInput
 private:
 	double map(int input, int input_start, int input_end, int output_start, int output_end);
 	void updateJoyStickValue();
-	uint8_t getJoyStick();
+	double getJoyStick();
 
 private:
 	ADC_HandleTypeDef *hadc;
@@ -21,7 +21,7 @@ public:
     void getControllerState();
 	bool buttonUp;
 	bool buttonDown;
-	uint8_t joyStickX;
+	double joyStickX;
 };
 
 
