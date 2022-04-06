@@ -54,19 +54,17 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
-uint32_t AD_RES = 0;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-static void MX_DMA_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_ADC_Init(void);
-static void MX_SPI1_Init(void);
+static void MX_DMA_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -110,11 +108,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_DMA_Init();
   MX_TIM3_Init();
+  MX_DMA_Init();
   MX_ADC_Init();
-  MX_SPI1_Init();
   MX_TIM16_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   // Calibrate The ADC On Power-Up For Better Accuracy
@@ -125,52 +123,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  cppMain(&hspi1, &hadc, &AD_RES);
+	  cppMain(&hspi1, &hadc);
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	// Start ADC converter to read joystick
-	HAL_ADC_Start_DMA(&hadc, &AD_RES, 1);
-
-	// Input and output variables for value mapping
-	int input_start = 1023; // inverted start and end because joystick is flipped.
-	int input_end = 0;
-	int output_start = 0;
-	int output_end = 255;
-	int input = AD_RES;
-	int output;
-
-	// Map value from 0 - 1023 to 0 - 255
-	double slope = 1.0 * (output_end - output_start) / (input_end - input_start);
-	output = output_start + slope * (input - input_start);
-
-	// Convert to character array to print via UART
-	char sOutput[8];
-	sprintf(sOutput,"%d", output);
-
-	// Read buttons
-	int buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
-	int buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
-
-	// Buttons are active high, so invert them with some bitwise magic.
-	buttonUp = buttonUp ^ 1;
-	buttonDown = buttonDown ^ 1;
-
-	// Button character array variables for printing via UART.
-	char sButtonUp[1];
-	char sButtonDown[1];
-
-	// Convert int to character array to print via UART.
-	sprintf(sButtonUp,"%d", buttonUp);
-	sprintf(sButtonDown,"%d", buttonDown);
-
-	debugPrintln(sOutput);
-	debugPrintln(sButtonUp);
-	debugPrintln(sButtonDown);
-
-	HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -259,6 +216,14 @@ static void MX_ADC_Init(void)
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel to be converted.
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -491,14 +456,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
-{
-    // Conversion Complete & DMA Transfer Complete As Well
-    // So The AD_RES Is Now Updated & Let's Move IT To The PWM CCR1
-    // Update The PWM Duty Cycle With Latest ADC Conversion Result
-    TIM3->CCR1 = (AD_RES<<4);
-}
 
 /* USER CODE END 4 */
 

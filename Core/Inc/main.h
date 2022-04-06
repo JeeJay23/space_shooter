@@ -36,7 +36,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-void cppMain(SPI_HandleTypeDef*, ADC_HandleTypeDef*, uint32_t*);
+void cppMain(SPI_HandleTypeDef*, ADC_HandleTypeDef*);
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

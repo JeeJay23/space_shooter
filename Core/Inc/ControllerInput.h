@@ -9,19 +9,22 @@ class ControllerInput
 private:
 	double map(int input, int input_start, int input_end, int output_start, int output_end);
 	void updateJoyStickValue();
-	double getJoyStick();
+	double getJoyStick(int);
 
 private:
 	ADC_HandleTypeDef *hadc;
-	uint32_t *AD_RES;
+	volatile uint16_t AD_RES [4];
 
 
 public:
-    ControllerInput(ADC_HandleTypeDef*, uint32_t*);
+    ControllerInput(ADC_HandleTypeDef*);
     void getControllerState();
 	bool buttonUp;
 	bool buttonDown;
 	double joyStickX;
+	double joyStickY;
+	double joyStickX2;
+	double joyStickY2;
 };
 
 

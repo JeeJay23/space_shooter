@@ -1,6 +1,6 @@
 #include "ControllerInput.h"
 
-ControllerInput::ControllerInput(ADC_HandleTypeDef *handle, uint32_t *buffer) : hadc(handle), AD_RES(buffer){
+ControllerInput::ControllerInput(ADC_HandleTypeDef *handle) : hadc(handle){
 }
 
 double ControllerInput::map(int input, int input_start, int input_end, int output_start, int output_end){
@@ -10,21 +10,23 @@ double ControllerInput::map(int input, int input_start, int input_end, int outpu
 }
 
 void ControllerInput::updateJoyStickValue(){
-
-	HAL_ADC_Start_DMA(hadc, AD_RES, 1);
+	HAL_ADC_Start_DMA(hadc, (uint32_t*)AD_RES, 4);
 }
 
-double ControllerInput::getJoyStick(){
-	// Input from 1023 to 0 (inverted because joystick is inverted)
-	// Output 0 - 255
-	return map(*AD_RES, 1023, 0, -180, 180);
+double ControllerInput::getJoyStick(int joystick){
+	//Convert output -180 to 180
+	return map(AD_RES[joystick], 0, 1023, -180, 180);
 }
 
 void ControllerInput::getControllerState(){
 
 	//ControllerState *state  = new ControllerState();
 	updateJoyStickValue();
-	joyStickX = getJoyStick();
-	buttonDown = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9);
-	buttonUp = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);
+	joyStickX = getJoyStick(0);
+	joyStickY = getJoyStick(1);
+	joyStickX2 = getJoyStick(2);
+	joyStickY2 = getJoyStick(3);
+	// Buttons are active high, so invert them with some bitwise magic.
+	buttonDown = (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) ^ 1);
+	buttonUp = (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8)^ 1);
 }

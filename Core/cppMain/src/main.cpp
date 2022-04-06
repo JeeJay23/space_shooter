@@ -9,10 +9,10 @@
 #include "main.h"
 #include "ControllerInput.h"
 
-void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer)
+void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
 {
 	protocol protocol(hspi);
-	ControllerInput controller(handle, buffer);
+	ControllerInput controller(handle);
 
 
 	for(;;){
@@ -22,6 +22,7 @@ void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffe
 		int starttick = HAL_GetTick();
 
 		controller.getControllerState();
+
 
 		if(controller.joyStickX < -160){
 			protocol.spriteX -= 1;
