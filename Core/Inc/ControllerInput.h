@@ -18,7 +18,7 @@ private:
 
 public:
     ControllerInput(ADC_HandleTypeDef*);
-    void getControllerState();
+    void update();
 	bool buttonUp;
 	bool buttonDown;
 	double joyStickX;

@@ -14,14 +14,13 @@ void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
 	protocol protocol(hspi);
 	ControllerInput controller(handle);
 
-
 	for(;;){
 		//engine.spiTrans();
 
 		// Read controller values.
 		int starttick = HAL_GetTick();
 
-		controller.getControllerState();
+		controller.update();
 
 
 		if(controller.joyStickX < -160){

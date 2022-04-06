@@ -18,7 +18,7 @@ double ControllerInput::getJoyStick(int joystick){
 	return map(AD_RES[joystick], 0, 1023, -180, 180);
 }
 
-void ControllerInput::getControllerState(){
+void ControllerInput::update(){
 
 	//ControllerState *state  = new ControllerState();
 	updateJoyStickValue();
