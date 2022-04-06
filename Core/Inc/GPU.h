@@ -13,6 +13,5 @@ public:
 	GPU();
 	~GPU();
 	void draw(gameObject**, int);
-	void drawMap(Map*);
 };
 

@@ -18,11 +18,8 @@ void Player::move()
 	if (controller->down) {
 		curVelocity.y += mSpeed;
 	}
-	if (controller->left) {
-		curVelocity.x += -mSpeed;
-	}
-	if (controller->right) {
-		curVelocity.x += mSpeed;
+	if (controller->x != 0) {
+		curVelocity.x += controller->x * .5;
 	}
 
 	// if player is grounded, apply vertical drag

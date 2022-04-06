@@ -5,14 +5,14 @@
  *      Author: 31623
  */
 
+#include <Controller.h>
 #include <protocol.h>
 #include "main.h"
-#include "ControllerInput.h"
 
 void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
 {
 	protocol protocol(hspi);
-	ControllerInput controller(handle);
+	Controller controller(handle);
 
 	for(;;){
 		//engine.spiTrans();
@@ -22,12 +22,11 @@ void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
 
 		controller.update();
 
-
-		if(controller.joyStickX < -160){
+		if(controller.x < -160){
 			protocol.spriteX -= 1;
 			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
 		}
-		else if(controller.joyStickX > 0){
+		else if(controller.y > 0){
 			protocol.spriteX += 1;
 			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
 		}

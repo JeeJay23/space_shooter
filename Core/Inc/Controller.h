@@ -1,13 +1,26 @@
-#pragma once
+#ifndef INC_CONTROLLER_H_
+#define INC_CONTROLLER_H_
+
+#include "main.h"
 
 class Controller
 {
 private:
-	void onKeyDown(SDL_KeyboardEvent*);
-	void onKeyUp(SDL_KeyboardEvent*);
+	double map(int input, int input_start, int input_end, int output_start, int output_end);
+	double getJoyStick(int);
+
+private:
+	ADC_HandleTypeDef *hadc;
+	volatile uint16_t AD_RES [4];
+
 public:
-	int up, down, left, right;
-	Controller() : up(0), down(0), left(0), right(0) {};
-	void processInput();
+    Controller(ADC_HandleTypeDef*);
+    void update();
+	bool up;
+	bool down;
+	double x;
+	double y;
 };
 
+
+#endif /* INC_CONTROLLER_H_ */
