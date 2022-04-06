@@ -6,19 +6,22 @@
  */
 
 #include <Controller.h>
-#include <protocol.h>
+#include <Protocol.h>
 #include "main.h"
 #include "GameEngine.h"
 
 void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
 {
-	protocol protocol(hspi);
+	Protocol protocol(hspi);
 	Controller controller(handle);
-	GameEngine engine(&controller, nullptr);
+	GPU gpu;
+	GameEngine engine(&gpu);
+
+	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controller);
+	engine.addPlayer(&player);
 
 	for(;;){
 		//engine.spiTrans();
-
 
 		// Read controller values.
 		int starttick = HAL_GetTick();

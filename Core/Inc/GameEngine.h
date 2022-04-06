@@ -22,7 +22,7 @@ private:
 	int objCount = 0;
 public:
 	gameObject *objects[MAX_GAMEOBJ_COUNT];
-	GameEngine(Controller *controllerA, Controller *controllerB);
+	GameEngine(GPU *gpu);
 	virtual ~GameEngine();
 	void addPlayer(Player *player);
 	void loop();

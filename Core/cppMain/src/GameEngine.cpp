@@ -7,9 +7,10 @@
 
 #include "GameEngine.h"
 
-GameEngine::GameEngine(Controller *controllerA, Controller *controllerB) : controllerA(controllerA) {
+GameEngine::GameEngine(GPU *gpu)
+	:	gpu(gpu)
+{
 	// TODO Auto-generated constructor stub
-	gpu = new GPU();
 
 	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
 
