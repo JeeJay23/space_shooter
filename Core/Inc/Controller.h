@@ -11,7 +11,7 @@ private:
 
 private:
 	ADC_HandleTypeDef *hadc;
-	volatile uint16_t AD_RES [4];
+	volatile uint16_t adc_buf [4];
 
 public:
     Controller(ADC_HandleTypeDef*);
