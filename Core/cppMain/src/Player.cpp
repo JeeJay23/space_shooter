@@ -7,7 +7,7 @@ void Player::move()
 		curVelocity.y += gravity;
 
 	// apply input logic
-	if (controller->up) {
+	if (controller->btnA) {
 		if (curFuel > 0) {
 			curVelocity.y += -mSpeed;
 			curFuel -= fuelDrain;
@@ -18,8 +18,8 @@ void Player::move()
 	if (controller->down) {
 		curVelocity.y += mSpeed;
 	}
-	if (controller->x != 0) {
-		curVelocity.x += controller->x * .5;
+	if (controller->x < -deadZone && controller->x > deadZone) {
+		curVelocity.x += controller->x * moveScale;
 	}
 
 	// if player is grounded, apply vertical drag

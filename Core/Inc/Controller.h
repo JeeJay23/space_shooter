@@ -15,8 +15,8 @@ private:
 public:
     Controller(ADC_HandleTypeDef*, uint32_t*);
     void update();
-	bool up;
-	bool down;
+	bool btnA;
+	bool btnB;
 	double x;
 };
 

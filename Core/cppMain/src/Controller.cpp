@@ -6,7 +6,7 @@ Controller::Controller(ADC_HandleTypeDef *handle, uint32_t *buffer) : hadc(handl
 double Controller::map(int input, int input_start, int input_end, int output_start, int output_end){
 
 	double slope = (output_end - output_start) / (input_end - input_start);
-	return  output_start + slope * (input - input_start);
+	return  output_start + slope * (input - input_start) - 85; // offset because joystick isnt perfectly centered
 }
 
 void Controller::update(){
@@ -18,5 +18,5 @@ void Controller::update(){
 
 	// Buttons are active high, so invert them with some bitwise magic.
 	down = (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) ^ 1);
-	up = (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8)^ 1);
+	btnA = (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8)^ 1);
 }
