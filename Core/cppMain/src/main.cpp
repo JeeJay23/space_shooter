@@ -5,44 +5,47 @@
  *      Author: 31623
  */
 
-#include <protocol.h>
+#include <Controller.h>
+#include <Protocol.h>
 #include "main.h"
-#include "ControllerInput.h"
+#include "GameEngine.h"
 
-void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
+void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer)
 {
-	protocol protocol(hspi);
-	ControllerInput controller(handle);
+	Protocol protocol(hspi);
+	Controller controller(handle, buffer);
+	GPU gpu(&protocol);
+	GameEngine engine(&gpu);
 
+	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controller);
+	engine.addPlayer(&player);
 
 	for(;;){
 		//engine.spiTrans();
 
 		// Read controller values.
 		int starttick = HAL_GetTick();
+		engine.loop();
 
-		controller.getControllerState();
-
-
-		if(controller.joyStickX < -160){
-			protocol.spriteX -= 1;
-			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
-		}
-		else if(controller.joyStickX > 0){
-			protocol.spriteX += 1;
-			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
-		}
-
-//Check if out of bounds
-		if(protocol.spriteX < 144+16)
-			protocol.spriteX = 784-16;
-		else if(protocol.spriteX > 784-16)
-			protocol.spriteX = 144+16;
-
-		if(protocol.spriteY < 31+16)
-			protocol.spriteY = 511-16;
-		else if(protocol.spriteY > 511-16)
-			protocol.spriteY = 31+16;
+//		if(controller.x < -160){
+//			protocol.spriteX -= 1;
+//			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
+//		}
+//		else if(controller.y > 0){
+//			protocol.spriteX += 1;
+//			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
+//		}
+//
+////Check if out of bounds
+//		if(protocol.spriteX < 144+16)
+//			protocol.spriteX = 784-16;
+//		else if(protocol.spriteX > 784-16)
+//			protocol.spriteX = 144+16;
+//
+//		if(protocol.spriteY < 31+16)
+//			protocol.spriteY = 511-16;
+//		else if(protocol.spriteY > 511-16)
+//			protocol.spriteY = 31+16;
 
 		//protocol.drawSprite(protocol.spriteX, protocol.spriteY);
 		//protocol.drawSprite(400, 400);

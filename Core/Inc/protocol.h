@@ -12,10 +12,10 @@
 #include "const.h"
 
 
-class protocol {
+class Protocol {
 public:
-	protocol(SPI_HandleTypeDef*);
-	~protocol();
+	Protocol(SPI_HandleTypeDef*);
+	~Protocol();
 
 	void drawSprite(unsigned int, unsigned int);
 	void drawLine();

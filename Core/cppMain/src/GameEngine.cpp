@@ -7,22 +7,44 @@
 
 #include "GameEngine.h"
 
-void gameInit(){
-	GameEngine engine();
-
-	engine().run();
-}
-
-GameEngine::GameEngine() {
+GameEngine::GameEngine(GPU *gpu)
+	:	gpu(gpu)
+{
 	// TODO Auto-generated constructor stub
+
+	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
 
 }
 
 GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
+	delete(gpu);
+	delete(controllerA);
+
+	// TODO delete all objects
 }
 
-void GameEngine::run()
-{
+void GameEngine::addPlayer(Player *player) {
+	objects[objCount] = player;
+	controllerA = player->controller;
+	objCount++;
+}
 
+void GameEngine::loop()
+{
+	// update inputs
+	controllerA->update();
+
+	// run physics / game logic
+	fixedUpdate();
+
+	// send to fpga
+	gpu->draw(objects, objCount);
+
+}
+
+void GameEngine::fixedUpdate() {
+	for (int i = 0; i < objCount; i++){
+		objects[i]->move();
+	}
 }

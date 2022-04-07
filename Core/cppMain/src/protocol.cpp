@@ -5,13 +5,13 @@
  *      Author: 31623
  */
 
-#include <protocol.h>
 #include <math.h>
+#include <Protocol.h>
 
-protocol::protocol(SPI_HandleTypeDef *hspi) : spi1(hspi)
+Protocol::Protocol(SPI_HandleTypeDef *hspi) : spi1(hspi)
 {}
 
-protocol::~protocol(){};
+Protocol::~Protocol(){};
 
 //void engine::spiTrans()
 //{
@@ -25,7 +25,7 @@ protocol::~protocol(){};
 //}
 
 //TODO: header with constants;
-void protocol::drawSprite(unsigned int sprite_x, unsigned int sprite_y)
+void Protocol::drawSprite(unsigned int sprite_x, unsigned int sprite_y)
 {
 	uint8_t buff[8] = {0b11101111,
 						SIZE_SPRITE,
