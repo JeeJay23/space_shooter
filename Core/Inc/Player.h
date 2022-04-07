@@ -20,7 +20,7 @@ private:
 
 	double curFuel = maxFuel;
 	int isGrounded = 0;
-	Controller* controller;
+
 	Vector curVelocity;
 
 public:
@@ -33,5 +33,6 @@ public:
 
 	Player() : gameObject(0, 0), controller(nullptr), curVelocity(Vector()) {};
 	void checkCollision(gameObject**);
+	Controller* controller;
 };
 
