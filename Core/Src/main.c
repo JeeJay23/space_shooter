@@ -77,6 +77,8 @@ void debugPrintln(char _out[]){
 	HAL_UART_Transmit(&huart2, (uint8_t *) newline, 4, 10);
 }
 
+uint32_t AD_RES = 0;
+
 /* USER CODE END 0 */
 
 /**
@@ -123,7 +125,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  cppMain(&hspi1, &hadc);
+	  cppMain(&hspi1, &hadc, &AD_RES);
 
     /* USER CODE END WHILE */
 

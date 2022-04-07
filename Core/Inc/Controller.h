@@ -7,19 +7,17 @@ class Controller
 {
 private:
 	double map(int input, int input_start, int input_end, int output_start, int output_end);
-	double getJoyStick(int);
 
 private:
 	ADC_HandleTypeDef *hadc;
-	volatile uint16_t adc_buf [4];
+	uint32_t *adc_buf;
 
 public:
-    Controller(ADC_HandleTypeDef*);
+    Controller(ADC_HandleTypeDef*, uint32_t*);
     void update();
 	bool up;
 	bool down;
 	double x;
-	double y;
 };
 
 

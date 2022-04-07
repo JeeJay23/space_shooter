@@ -10,11 +10,11 @@
 #include "main.h"
 #include "GameEngine.h"
 
-void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle)
+void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer)
 {
 	Protocol protocol(hspi);
-	Controller controller(handle);
-	GPU gpu;
+	Controller controller(handle, buffer);
+	GPU gpu(&protocol);
 	GameEngine engine(&gpu);
 
 	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controller);
