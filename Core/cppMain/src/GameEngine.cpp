@@ -26,7 +26,6 @@ GameEngine::~GameEngine() {
 
 void GameEngine::addPlayer(Player *player) {
 	objects[objCount] = player;
-	controllerA = player->controller;
 	objCount++;
 }
 
