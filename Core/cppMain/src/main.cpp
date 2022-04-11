@@ -25,7 +25,7 @@ void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffe
 	engine.addPlayer(&player);
 	engine.addPlayer(&player);
 	engine.controllerA = player.controller;
-	engine.cntrlrB = player2.controller;
+	engine.controllerB = player2.controller;
 
 	for(;;){
 		//engine.spiTrans();

@@ -27,7 +27,7 @@ public:
 	void addPlayer(Player *player);
 	void loop();
 	void fixedUpdate();
-	Controller *controllerA, *cntrlrB;
+	Controller *controllerA, *controllerB;
 };
 
 #endif /* GAMEENGINE_H_ */

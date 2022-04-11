@@ -33,6 +33,7 @@ void GameEngine::loop()
 {
 	// update inputs
 	controllerA->update();
+	controllerB->update();
 
 	// run physics / game logic
 	fixedUpdate();
