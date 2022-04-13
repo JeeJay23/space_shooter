@@ -4,24 +4,22 @@
  *  Created on: Mar 15, 2022
  *      Author: 31623
  */
-
-#include <ADCController.h>
 #include <Protocol.h>
 #include "main.h"
 #include "GameEngine.h"
-#include "SPIController.h"
+#include "Controller.h"
 
 
 void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer, SPI_HandleTypeDef *hspi2)
 {
 	Protocol protocol(hspi);
-	ADCController controller(handle, buffer);
-	SPIController spicontroller(hspi2);
+	Controller controllerA(0);
+	Controller controllerB(1);
 	GPU gpu(&protocol);
 	GameEngine engine(&gpu);
 
-	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controller);
-	Player player2(gpu.width/2, gpu.height/2, Vector(0,0), &spicontroller);
+	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controllerA);
+	Player player2(gpu.width/2, gpu.height/2, Vector(0,0), &controllerB);
 	engine.addPlayer(&player);
 	engine.addPlayer(&player);
 	engine.controllerA = player.controller;

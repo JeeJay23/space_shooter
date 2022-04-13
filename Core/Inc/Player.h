@@ -1,5 +1,5 @@
 #pragma once
-#include <ADCController.h>
+#include "Controller.h"
 #include "gameObject.h"
 #include "globals.h"
 #include <cmath>

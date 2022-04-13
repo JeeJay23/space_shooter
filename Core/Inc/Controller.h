@@ -1,29 +1,24 @@
-/*
- * ControllerInterface.h
- *
- *  Created on: Apr 7, 2022
- *      Author: 31623
- */
-
 #ifndef INC_CONTROLLER_H_
 #define INC_CONTROLLER_H_
 
-class Controller {
+#include "main.h"
+
+class Controller{
 public:
+	Controller(int);
+	void update();
 
-    virtual void update() = 0;
-    double map(double, double, double, double, double);
-
-	bool up;
-	bool down;
-	double x;
+	bool left;
+    bool right;
+    bool a;
+	bool b;
 
 private:
+	void setGPIO(int);
+	struct GPIO{
+			GPIO_TypeDef* GPIOx;
+	    	uint16_t GPIO_Pin;
+	} buttonLeft, buttonRight, buttonA, buttonB ;
 };
-
-inline double Controller::map(double input, double input_start, double input_end, double output_start, double output_end) {
-	double slope = 1.0 * (output_end - output_start) / (input_end - input_start);
-	return  output_start + slope * (input - input_start);
-}
 
 #endif /* INC_CONTROLLER_H_ */
