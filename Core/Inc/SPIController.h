@@ -18,9 +18,7 @@ public:
 
 private:
 	void update() override;
-
 	SPI_HandleTypeDef *hspi;
-	uint8_t spiReceive[10] = {0};
 
 };
 

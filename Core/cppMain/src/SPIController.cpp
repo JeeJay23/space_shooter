@@ -18,9 +18,9 @@ SPIController::~SPIController() {
 }
 
 void SPIController::update() {
-	//HAL_SPI_TransmitReceive(hspi, spiTrans, spiReceive, 3, 1);
-
-	HAL_SPI_Receive(hspi, spiReceive, 5, 100);
+	uint8_t spiReceive[50] = {0};
+	uint8_t spiTrans[] = {1, 128, 255};
+	HAL_SPI_Receive(hspi, spiReceive, 50, 20);
 
 	x = map((double)spiReceive[0], 0, 1023, -180, 180);
 
