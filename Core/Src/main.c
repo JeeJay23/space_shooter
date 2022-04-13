@@ -293,19 +293,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Ctrl_A_Btn_Right_Pin Ctrl_A_Btn_Left_Pin Button_down_Pin Button_up_Pin
-                           Ctrl_A_Btn_A_Pin */
-  GPIO_InitStruct.Pin = Ctrl_A_Btn_Right_Pin|Ctrl_A_Btn_Left_Pin|Button_down_Pin|Button_up_Pin
-                          |Ctrl_A_Btn_A_Pin;
+  /*Configure GPIO pins : Ctrl_B_Btn_A_Pin Ctrl_B_Btn_Right_Pin Ctrl_B_Btn_Left_Pin Ctrl_A_Btn_Left_Pin */
+  GPIO_InitStruct.Pin = Ctrl_B_Btn_A_Pin|Ctrl_B_Btn_Right_Pin|Ctrl_B_Btn_Left_Pin|Ctrl_A_Btn_Left_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Ctrl_A_Btn_B_Pin Ctrl_A_Btn_Start_Pin */
-  GPIO_InitStruct.Pin = Ctrl_A_Btn_B_Pin|Ctrl_A_Btn_Start_Pin;
+  /*Configure GPIO pins : Ctrl_A_Btn_B_Pin Ctrl_A_Btn_Right_Pin Ctrl_A_Btn_A_Pin Ctrl_A_Btn_Start_Pin
+                           Ctrl_B_Btn_B_Pin */
+  GPIO_InitStruct.Pin = Ctrl_A_Btn_B_Pin|Ctrl_A_Btn_Right_Pin|Ctrl_A_Btn_A_Pin|Ctrl_A_Btn_Start_Pin
+                          |Ctrl_B_Btn_B_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Ctrl_B_Btn_Start_Pin */
+  GPIO_InitStruct.Pin = Ctrl_B_Btn_Start_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(Ctrl_B_Btn_Start_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB6 */
   GPIO_InitStruct.Pin = GPIO_PIN_6;
