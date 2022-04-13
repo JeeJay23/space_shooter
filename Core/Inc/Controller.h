@@ -12,13 +12,14 @@ public:
     bool right;
     bool a;
 	bool b;
+	bool start;
 
 private:
 	void setGPIO(int);
 	struct GPIO{
 			GPIO_TypeDef* GPIOx;
 	    	uint16_t GPIO_Pin;
-	} buttonLeft, buttonRight, buttonA, buttonB ;
+	} buttonLeft, buttonRight, buttonA, buttonB, buttonStart;
 };
 
 #endif /* INC_CONTROLLER_H_ */

@@ -20,6 +20,7 @@ GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
 	delete(gpu);
 	delete(controllerA);
+	delete(controllerB);
 
 	// TODO delete all objects
 }

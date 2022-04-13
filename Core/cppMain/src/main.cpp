@@ -10,7 +10,7 @@
 #include "Controller.h"
 
 
-void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer, SPI_HandleTypeDef *hspi2)
+void cppMain(SPI_HandleTypeDef *hspi)
 {
 	Protocol protocol(hspi);
 	Controller controllerA(0);
