@@ -1,6 +1,9 @@
 #pragma once
 
 // display settings
+const int FRONT_PORCH = 143;
+const int VERT_PORCH = 30;
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
