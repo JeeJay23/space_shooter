@@ -4,6 +4,13 @@ void Block::move()
 {
 }
 
-void Block::checkCollision(gameObject**)
+bool Block::checkCollision(gameObject** others, int objCnt)
+{
+	//TODO
+	return false; 
+}
+
+void Block::onCollisionEnter(gameObject*)
 {
 }
+

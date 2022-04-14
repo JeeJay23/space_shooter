@@ -18,8 +18,27 @@ void cppMain(SPI_HandleTypeDef *hspi)
 	GPU gpu(&protocol);
 	GameEngine engine(&gpu);
 
-	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controllerA);
-	Player player2(gpu.width/2, gpu.height/2, Vector(0,0), &controllerB);
+	Player player(
+			gpu.width/2,
+			gpu.height/2,
+			PLAYER_RADIUS,
+			Vector(0,0),
+			&controllerA,
+			engine.toAdd,
+			&engine.toAddCount
+	);
+
+
+	Player player2(
+			gpu.width/2,
+			gpu.height/2,
+			PLAYER_RADIUS,
+			Vector(0,0),
+			&controllerB,
+			engine.toAdd,
+			&engine.toAddCount
+	);
+
 	engine.addPlayer(&player);
 	engine.addPlayer(&player);
 	engine.controllerA = player.controller;

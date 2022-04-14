@@ -1,46 +1,64 @@
 #include "Player.h"
+#include "Bullet.h"
+#include <iostream>
+
+void Player::spawnBullet(int x, int y, int speed)
+{
+	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM));
+	toSpawn[*toSpawnCnt] = toAdd; // array is checked every update. TODO move this logic to gameEngine
+	(*toSpawnCnt)++;
+}
 
 void Player::move()
 {
 	// apply gravity
 	if (!isGrounded)
-		curVelocity.y += gravity;
+		curVelocity.y += PLAYER_GRAVITY;
 
 	// apply input logic
-	if (controller->a) {
+	if (controller->b) {
 		if (curFuel > 0) {
-			curVelocity.y += -mSpeed;
-			curFuel -= fuelDrain;
+			curVelocity.y += -PLAYER_MOVESPEED;
+			curFuel -= PLAYER_FUELDRAIN;
 		}
 
 		isGrounded = 0;
 	}
-	if (controller->b) {
-		curVelocity.y += mSpeed;
-	}
 	if (controller->left) {
-		curVelocity.x += 100 * .5;
+		curVelocity.x += -PLAYER_MOVESPEED;
+		facingRight = false;
 	}
 	if (controller->right) {
-		curVelocity.x += -100 * .5;
+		curVelocity.x += PLAYER_MOVESPEED;
+		facingRight = true;
+	}
+
+	// shoot bullet
+	if (controller->a &&
+		fireCooldown == 0 &&
+		bullets < PLAYER_MAX_BULLETS) {
+
+		fireCooldown = PLAYER_FIRE_COOLDOWN;
+		int sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE+8 : x - PLACEHOLDER_SPR_SIZE+8;
+		spawnBullet(sX, y, (facingRight) ? BULLET_SPEED : - BULLET_SPEED);
 	}
 
 	// if player is grounded, apply vertical drag
 	if (isGrounded) {
 		if (curVelocity.x > 0)
-			curVelocity.x -= drag;
+			curVelocity.x -= PLAYER_DRAG;
 		else if (curVelocity.x < 0)
-			curVelocity.x += drag;
+			curVelocity.x += PLAYER_DRAG;
 
-		if (abs(curVelocity.x) < minSpeed) // deadzone
+		if (abs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
 			curVelocity.x = 0;
 
-		curFuel = maxFuel;
+		curFuel = PLAYER_MAXFUEL;
 	}
 
 	// clamp values to max movement speed
-	curVelocity.x = fmin(maxSpeed, fmax(curVelocity.x, -maxSpeed));
-	curVelocity.y = fmin(maxSpeed, fmax(curVelocity.y, -maxSpeed));
+	curVelocity.x = fmin(PLAYER_MAXSPEED, fmax(curVelocity.x, -PLAYER_MAXSPEED));
+	curVelocity.y = fmin(PLAYER_MAXSPEED, fmax(curVelocity.y, -PLAYER_MAXSPEED));
 
 	// looping on screen edge
 	if (x > SCREEN_WIDTH) {
@@ -60,10 +78,35 @@ void Player::move()
 		curVelocity.y = 0; // cancel vertical velocity
 	}
 
+	// count down cooldown
+	if (fireCooldown > 0) fireCooldown--;
+
 	x += curVelocity.x;
 	y += curVelocity.y;
 }
 
-void Player::checkCollision(gameObject** others)
+bool Player::checkCollision(gameObject** others, int objCnt)
 {
+	for (int i = 0; i < objCnt; i++) {
+		if (others[i] == this) continue;
+
+		Vector player(x, y);
+		if (player.distanceTo(others[i]->x, others[i]->y) <= radius) 
+		{
+			spawnBullet(this->x + 2, this->y - 50, BULLET_SPEED);
+			return true;
+		}
+			
+		return false;
+
+	}
+}
+
+void Player::onCollisionEnter(gameObject* other) 
+{
+}
+
+std::string Player::getClassName()
+{
+	return "Player";
 }

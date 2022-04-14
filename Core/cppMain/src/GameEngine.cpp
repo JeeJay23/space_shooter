@@ -6,6 +6,7 @@
  */
 
 #include "GameEngine.h"
+#include <cstring>
 
 GameEngine::GameEngine(GPU *gpu)
 	:	gpu(gpu)

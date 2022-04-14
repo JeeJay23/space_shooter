@@ -1,9 +1,7 @@
 #pragma once
 #include "Protocol.h"
-#include "Frame.h"
 #include "gameObject.h"
 #include "globals.h"
-#include "Map.h"
 
 class GPU
 {

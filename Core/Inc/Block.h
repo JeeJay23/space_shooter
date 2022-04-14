@@ -6,6 +6,8 @@ class Block : public gameObject
 public:
 	void move();
 	Block(int x, int y) : gameObject(x, y) {};
-	void checkCollision(gameObject**);
+	bool checkCollision(gameObject**, int);
+	void onCollisionEnter(gameObject*);
+	std::string getClassName();
 };
 
