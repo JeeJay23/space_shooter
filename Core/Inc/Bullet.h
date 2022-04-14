@@ -18,6 +18,6 @@ public:
     bool checkCollision(gameObject**, int);
     void die();
     void onCollisionEnter(gameObject*);
-    std::string getClassName();
+
 };
 

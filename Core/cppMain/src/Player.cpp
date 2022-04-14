@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "Bullet.h"
-#include <iostream>
 
 void Player::spawnBullet(int x, int y, int speed)
 {
@@ -104,9 +103,4 @@ bool Player::checkCollision(gameObject** others, int objCnt)
 
 void Player::onCollisionEnter(gameObject* other) 
 {
-}
-
-std::string Player::getClassName()
-{
-	return "Player";
 }

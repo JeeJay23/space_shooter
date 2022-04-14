@@ -1,6 +1,5 @@
 #include "Bullet.h"
 #include "globals.h"
-#include <iostream>
 
 void Bullet::move()
 {

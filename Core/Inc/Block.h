@@ -8,6 +8,5 @@ public:
 	Block(int x, int y) : gameObject(x, y) {};
 	bool checkCollision(gameObject**, int);
 	void onCollisionEnter(gameObject*);
-	std::string getClassName();
 };
 

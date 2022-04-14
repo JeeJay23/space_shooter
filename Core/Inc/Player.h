@@ -2,7 +2,7 @@
 #include "gameObject.h"
 #include "Controller.h"
 #include "globals.h"
-#include <cmath>
+//#include <cmath>
 
 class Player : public gameObject
 {
@@ -54,7 +54,7 @@ public:
 
 	bool checkCollision(gameObject**, int);
 	void onCollisionEnter(gameObject*);
-	std::string getClassName();
+
 };
 
 

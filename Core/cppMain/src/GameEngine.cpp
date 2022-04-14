@@ -6,15 +6,13 @@
  */
 
 #include "GameEngine.h"
-#include <cstring>
 
 GameEngine::GameEngine(GPU *gpu)
 	:	gpu(gpu)
 {
 	// TODO Auto-generated constructor stub
 
-	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
-
+//	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
 }
 
 GameEngine::~GameEngine() {
@@ -42,7 +40,6 @@ void GameEngine::loop()
 
 	// send to fpga
 	gpu->draw(objects, objCount);
-
 }
 
 void GameEngine::fixedUpdate() {
