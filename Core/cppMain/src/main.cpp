@@ -18,10 +18,30 @@ void cppMain(SPI_HandleTypeDef *hspi)
 	GPU gpu(&protocol);
 	GameEngine engine(&gpu);
 
-	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controllerA);
-	Player player2(gpu.width/2, gpu.height/2, Vector(0,0), &controllerB);
+	Player player(
+			400,
+			200,
+			PLAYER_RADIUS,
+			sprPlayer1,
+			Vector(0,0),
+			&controllerA,
+			engine.toAdd,
+			&engine.toAddCount
+	);
+
+	Player player2(
+			600,
+			400,
+			PLAYER_RADIUS,
+			sprPlayer2,
+			Vector(0,0),
+			&controllerB,
+			engine.toAdd,
+			&engine.toAddCount
+	);
+
 	engine.addPlayer(&player);
-	engine.addPlayer(&player);
+	engine.addPlayer(&player2);
 	engine.controllerA = player.controller;
 	engine.controllerB = player2.controller;
 
@@ -32,28 +52,9 @@ void cppMain(SPI_HandleTypeDef *hspi)
 		int starttick = HAL_GetTick();
 		engine.loop();
 
-//		if(controller.x < -160){
-//			protocol.spriteX -= 1;
-//			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
-//		}
-//		else if(controller.y > 0){
-//			protocol.spriteX += 1;
-//			protocol.drawSprite(protocol.spriteX, protocol.spriteY);
-//		}
-//
-////Check if out of bounds
-//		if(protocol.spriteX < 144+16)
-//			protocol.spriteX = 784-16;
-//		else if(protocol.spriteX > 784-16)
-//			protocol.spriteX = 144+16;
-//
-//		if(protocol.spriteY < 31+16)
-//			protocol.spriteY = 511-16;
-//		else if(protocol.spriteY > 511-16)
-//			protocol.spriteY = 31+16;
-
-		//protocol.drawSprite(protocol.spriteX, protocol.spriteY);
-		//protocol.drawSprite(400, 400);
+//		protocol.drawSprite(400,400, 3);
+//		protocol.drawSprite(200,400, 4);
+//		protocol.drawSprite(400,100, 5);
 
 		int stoptick = HAL_GetTick();
 

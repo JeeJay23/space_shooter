@@ -6,14 +6,14 @@
  */
 
 #include "GameEngine.h"
+#include "gameObject.h"
 
 GameEngine::GameEngine(GPU *gpu)
 	:	gpu(gpu)
 {
 	// TODO Auto-generated constructor stub
 
-	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
-
+//	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
 }
 
 GameEngine::~GameEngine() {
@@ -30,6 +30,14 @@ void GameEngine::addPlayer(Player *player) {
 	objCount++;
 }
 
+void GameEngine::addObj(gameObject* toAdd)
+{
+    if (objCount >= MAX_GAMEOBJ_COUNT - 1) return;
+
+    objects[objCount] = toAdd;
+    objCount++;
+}
+
 void GameEngine::loop()
 {
 	// update inputs
@@ -39,9 +47,14 @@ void GameEngine::loop()
 	// run physics / game logic
 	fixedUpdate();
 
+	for (int i = 0; i < toAddCount; i++) {
+	        addObj(toAdd[i]);
+	    }
+
+	toAddCount = 0;
+
 	// send to fpga
 	gpu->draw(objects, objCount);
-
 }
 
 void GameEngine::fixedUpdate() {

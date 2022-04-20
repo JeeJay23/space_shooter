@@ -1,40 +1,62 @@
 #pragma once
-#include "Controller.h"
 #include "gameObject.h"
+#include "Controller.h"
 #include "globals.h"
-#include <cmath>
+//#include <cmath>
 
 class Player : public gameObject
 {
 private:
-	// general
-	const double mSpeed 		= 1.5;
-	const double minSpeed 		= 0.5f;
-	const double maxSpeed 		= 10;
-	const double gravity 		= 1;
-	const double drag 			= 0.8;
-	const double moveScale 		= 0.1; // factor for scaling controller x
-	const double deadZone		= 20; // joystick deadzone
+	double curFuel = PLAYER_MAXFUEL;
 
-	// jetpack
-	const double maxFuel = 100;
-	const double fuelDrain = .5f;
+	int fireCooldown = 0;
+	int bullets = 0;
 
-	double curFuel = maxFuel;
 	int isGrounded = 0;
+	bool facingRight = true;
 
 	Vector curVelocity;
 
+	gameObject** toSpawn;
+	int* toSpawnCnt;
+
+	void spawnBullet(int, int, int);
+
+
+
 public:
+	Controller* controller;
 	void move();
 
-	Player(int x, int y, Vector spd, Controller* controller)
-		: gameObject(x, y)
+	Player(
+			int x,
+			int y,
+			int radius,
+			spriteType type,
+			Vector spd,
+			Controller* controller,
+			gameObject** toSpawn,
+			int* spawnCnt
+			)
+		: gameObject(x, y, radius, type)
 		, controller(controller)
-		, curVelocity(spd) {};
+		, curVelocity(spd)
+		, toSpawn(toSpawn)
+		, toSpawnCnt(spawnCnt)
+	{};
 
-	Player() : gameObject(0, 0), controller(nullptr), curVelocity(Vector()) {};
-	void checkCollision(gameObject**);
-	Controller* controller;
+	Player()
+		: gameObject(0, 0)
+		, controller(nullptr)
+		, curVelocity(Vector())
+		, toSpawn(nullptr)
+		, toSpawnCnt(nullptr)
+	{};
+
+	bool checkCollision(gameObject**, int);
+	void onCollisionEnter(gameObject*);
+
 };
+
+
 

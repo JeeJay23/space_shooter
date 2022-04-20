@@ -10,7 +10,6 @@
 
 #include "Controller.h"
 #include "GPU.h"
-#include "Map.h"
 #include "gameObject.h"
 #include "Player.h"
 
@@ -18,16 +17,21 @@ class GameEngine {
 private:
 	GPU *gpu;
 
-	Map *map;
-	int objCount = 0;
 public:
-	gameObject *objects[MAX_GAMEOBJ_COUNT];
 	GameEngine(GPU *gpu);
 	virtual ~GameEngine();
+
+	gameObject *objects[MAX_GAMEOBJ_COUNT];
+	int objCount = 0;
+	gameObject *toAdd[MAX_TOADD_COUNT];
+	int toAddCount = 0;
+
+	Controller *controllerA, *controllerB;
+
 	void addPlayer(Player *player);
+	void addObj(gameObject* toAdd);
 	void loop();
 	void fixedUpdate();
-	Controller *controllerA, *controllerB;
 };
 
 #endif /* GAMEENGINE_H_ */
