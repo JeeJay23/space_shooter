@@ -8,8 +8,8 @@
 #ifndef GAMEENGINE_H_
 #define GAMEENGINE_H_
 
-#include "GPU.h"
 #include "Controller.h"
+#include "GPU.h"
 #include "Map.h"
 #include "gameObject.h"
 #include "Player.h"
@@ -17,7 +17,7 @@
 class GameEngine {
 private:
 	GPU *gpu;
-	Controller *controllerA, *cntrlrB;
+
 	Map *map;
 	int objCount = 0;
 public:
@@ -27,6 +27,7 @@ public:
 	void addPlayer(Player *player);
 	void loop();
 	void fixedUpdate();
+	Controller *controllerA, *controllerB;
 };
 
 #endif /* GAMEENGINE_H_ */

@@ -1,6 +1,6 @@
 #pragma once
-#include "gameObject.h"
 #include "Controller.h"
+#include "gameObject.h"
 #include "globals.h"
 #include <cmath>
 

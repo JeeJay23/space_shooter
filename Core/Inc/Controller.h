@@ -3,22 +3,23 @@
 
 #include "main.h"
 
-class Controller
-{
-private:
-	double map(int input, int input_start, int input_end, int output_start, int output_end);
-
-private:
-	ADC_HandleTypeDef *hadc;
-	uint32_t *adc_buf;
-
+class Controller{
 public:
-    Controller(ADC_HandleTypeDef*, uint32_t*);
-    void update();
-	bool btnA;
-	bool btnB;
-	double x;
-};
+	Controller(int);
+	void update();
 
+	bool left;
+    bool right;
+    bool a;
+	bool b;
+	bool start;
+
+private:
+	void setGPIO(int);
+	struct GPIO{
+			GPIO_TypeDef* GPIOx;
+	    	uint16_t GPIO_Pin;
+	} buttonLeft, buttonRight, buttonA, buttonB, buttonStart;
+};
 
 #endif /* INC_CONTROLLER_H_ */

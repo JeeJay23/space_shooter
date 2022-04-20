@@ -4,21 +4,26 @@
  *  Created on: Mar 15, 2022
  *      Author: 31623
  */
-
-#include <Controller.h>
 #include <Protocol.h>
 #include "main.h"
 #include "GameEngine.h"
+#include "Controller.h"
 
-void cppMain(SPI_HandleTypeDef *hspi, ADC_HandleTypeDef *handle, uint32_t *buffer)
+
+void cppMain(SPI_HandleTypeDef *hspi)
 {
 	Protocol protocol(hspi);
-	Controller controller(handle, buffer);
+	Controller controllerA(0);
+	Controller controllerB(1);
 	GPU gpu(&protocol);
 	GameEngine engine(&gpu);
 
-	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controller);
+	Player player(gpu.width/2, gpu.height/2, Vector(0,0), &controllerA);
+	Player player2(gpu.width/2, gpu.height/2, Vector(0,0), &controllerB);
 	engine.addPlayer(&player);
+	engine.addPlayer(&player);
+	engine.controllerA = player.controller;
+	engine.controllerB = player2.controller;
 
 	for(;;){
 		//engine.spiTrans();
