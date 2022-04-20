@@ -17,7 +17,7 @@ public:
 	Protocol(SPI_HandleTypeDef*);
 	~Protocol();
 
-	void drawSprite(unsigned int, unsigned int);
+	void drawSprite(unsigned int, unsigned int, unsigned int);
 	void drawLine();
 	void playAudio();
 	unsigned int spriteX = 500, spriteY = 300;

@@ -29,6 +29,7 @@ public:
 	Controller *controllerA, *controllerB;
 
 	void addPlayer(Player *player);
+	void addObj(gameObject* toAdd);
 	void loop();
 	void fixedUpdate();
 };

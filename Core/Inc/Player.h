@@ -32,12 +32,13 @@ public:
 			int x,
 			int y,
 			int radius,
+			spriteType type,
 			Vector spd,
 			Controller* controller,
 			gameObject** toSpawn,
 			int* spawnCnt
 			)
-		: gameObject(x, y, radius)
+		: gameObject(x, y, radius, type)
 		, controller(controller)
 		, curVelocity(spd)
 		, toSpawn(toSpawn)

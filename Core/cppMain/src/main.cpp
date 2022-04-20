@@ -19,9 +19,10 @@ void cppMain(SPI_HandleTypeDef *hspi)
 	GameEngine engine(&gpu);
 
 	Player player(
-			gpu.width/2,
-			gpu.height/2,
+			400,
+			200,
 			PLAYER_RADIUS,
+			sprPlayer1,
 			Vector(0,0),
 			&controllerA,
 			engine.toAdd,
@@ -29,9 +30,10 @@ void cppMain(SPI_HandleTypeDef *hspi)
 	);
 
 	Player player2(
-			gpu.width/2,
-			gpu.height/2,
+			600,
+			400,
 			PLAYER_RADIUS,
+			sprPlayer2,
 			Vector(0,0),
 			&controllerB,
 			engine.toAdd,
@@ -39,7 +41,7 @@ void cppMain(SPI_HandleTypeDef *hspi)
 	);
 
 	engine.addPlayer(&player);
-	engine.addPlayer(&player);
+	engine.addPlayer(&player2);
 	engine.controllerA = player.controller;
 	engine.controllerB = player2.controller;
 
@@ -49,6 +51,10 @@ void cppMain(SPI_HandleTypeDef *hspi)
 		// Read controller values.
 		int starttick = HAL_GetTick();
 		engine.loop();
+
+//		protocol.drawSprite(400,400, 3);
+//		protocol.drawSprite(200,400, 4);
+//		protocol.drawSprite(400,100, 5);
 
 		int stoptick = HAL_GetTick();
 

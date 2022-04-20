@@ -3,7 +3,7 @@
 
 void Player::spawnBullet(int x, int y, int speed)
 {
-	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM));
+	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM), sprBullet);
 	toSpawn[*toSpawnCnt] = toAdd; // array is checked every update. TODO move this logic to gameEngine
 	(*toSpawnCnt)++;
 }
@@ -38,7 +38,7 @@ void Player::move()
 		bullets < PLAYER_MAX_BULLETS) {
 
 		fireCooldown = PLAYER_FIRE_COOLDOWN;
-		int sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE+8 : x - PLACEHOLDER_SPR_SIZE+8;
+		int sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE : x - PLACEHOLDER_SPR_SIZE;
 		spawnBullet(sX, y, (facingRight) ? BULLET_SPEED : - BULLET_SPEED);
 	}
 
@@ -49,7 +49,7 @@ void Player::move()
 		else if (curVelocity.x < 0)
 			curVelocity.x += PLAYER_DRAG;
 
-		if (abs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
+		if (fabs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
 			curVelocity.x = 0;
 
 		curFuel = PLAYER_MAXFUEL;

@@ -9,8 +9,8 @@ private:
     Vector curVelocity;
     int ttl = MAX_TTL;
 public:
-    Bullet(int x, int y, Vector vel)
-        : gameObject(x,y)
+    Bullet(int x, int y, Vector vel, spriteType type)
+        : gameObject(x,y,0,type)
         , curVelocity(vel) 
     {}
 
