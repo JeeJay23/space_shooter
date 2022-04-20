@@ -9,8 +9,8 @@ private:
     Vector curVelocity;
     int ttl = MAX_TTL;
 public:
-    Bullet(int x, int y, Vector vel, spriteType type)
-        : gameObject(x,y,0,type)
+    Bullet(int x, int y, Vector vel)
+        : gameObject(x,y)
         , curVelocity(vel) 
     {}
 
@@ -18,6 +18,6 @@ public:
     bool checkCollision(gameObject**, int);
     void die();
     void onCollisionEnter(gameObject*);
-
+    std::string getClassName();
 };
 

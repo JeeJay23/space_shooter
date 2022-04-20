@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "globals.h"
+#include <iostream>
 
 void Bullet::move()
 {
@@ -36,6 +37,7 @@ bool Bullet::checkCollision(gameObject** objs, int objCnt)
 
 void Bullet::die()
 {
+	std::printf("Bullet goes die\n");
 	curVelocity.x = 0;
 	curVelocity.y = 0;
 	x = -100;
@@ -43,4 +45,10 @@ void Bullet::die()
 
 void Bullet::onCollisionEnter(gameObject* other)
 {
+
+}
+
+std::string Bullet::getClassName()
+{
+	return "Bullet";
 }

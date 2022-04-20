@@ -14,3 +14,7 @@ void Block::onCollisionEnter(gameObject*)
 {
 }
 
+std::string Block::getClassName()
+{
+	return "Block";
+}

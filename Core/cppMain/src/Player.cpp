@@ -1,11 +1,18 @@
 #include "Player.h"
 #include "Bullet.h"
+#include <iostream>
 
 void Player::spawnBullet(int x, int y, int speed)
 {
-	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM), sprBullet);
+	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM));
 	toSpawn[*toSpawnCnt] = toAdd; // array is checked every update. TODO move this logic to gameEngine
 	(*toSpawnCnt)++;
+}
+
+int Player::map(int iEnd, int oEnd, int input)
+{
+	double slope = (double)(oEnd) / (double)(iEnd);
+	return slope * (input);
 }
 
 void Player::move()
@@ -15,13 +22,16 @@ void Player::move()
 		curVelocity.y += PLAYER_GRAVITY;
 
 	// apply input logic
-	if (controller->b) {
+	if (controller->up) {
 		if (curFuel > 0) {
 			curVelocity.y += -PLAYER_MOVESPEED;
 			curFuel -= PLAYER_FUELDRAIN;
 		}
 
 		isGrounded = 0;
+	}
+	if (controller->down) {
+		curVelocity.y += PLAYER_MOVESPEED;
 	}
 	if (controller->left) {
 		curVelocity.x += -PLAYER_MOVESPEED;
@@ -33,12 +43,14 @@ void Player::move()
 	}
 
 	// shoot bullet
-	if (controller->a &&
-		fireCooldown == 0 &&
+	if (controller->btnA && 
+		fireCooldown == 0 && 
 		bullets < PLAYER_MAX_BULLETS) {
 
+		const int offset = 20;
+
 		fireCooldown = PLAYER_FIRE_COOLDOWN;
-		int sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE : x - PLACEHOLDER_SPR_SIZE;
+		double sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE + offset : x - PLACEHOLDER_SPR_SIZE - offset;
 		spawnBullet(sX, y, (facingRight) ? BULLET_SPEED : - BULLET_SPEED);
 	}
 
@@ -49,7 +61,7 @@ void Player::move()
 		else if (curVelocity.x < 0)
 			curVelocity.x += PLAYER_DRAG;
 
-		if (fabs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
+		if (abs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
 			curVelocity.x = 0;
 
 		curFuel = PLAYER_MAXFUEL;
@@ -60,17 +72,23 @@ void Player::move()
 	curVelocity.y = fmin(PLAYER_MAXSPEED, fmax(curVelocity.y, -PLAYER_MAXSPEED));
 
 	// looping on screen edge
-	if (x > SCREEN_WIDTH) {
+	if (x > SCREEN_WIDTH)
 		x = 0;
-	}
-	if (x < 0) {
+
+	if (x < 0)
 		x = SCREEN_WIDTH;
-	}
+
+	int colIndex = map(SCREEN_WIDTH, groundColumnsAmount, x);
+	std::printf("current column: %i\n", colIndex);
+
+	// Ground
 	if (y > SCREEN_HEIGHT - PLACEHOLDER_SPR_SIZE*2) {
 		y = SCREEN_HEIGHT - PLACEHOLDER_SPR_SIZE*2;
 		isGrounded = 1;
 		curVelocity.y = 0; // cancel vertical velocity
 	}
+
+	// Ceiling
 	if (y < PLACEHOLDER_SPR_SIZE) {
 		isGrounded = 0;
 		y = PLACEHOLDER_SPR_SIZE;
@@ -86,21 +104,20 @@ void Player::move()
 
 bool Player::checkCollision(gameObject** others, int objCnt)
 {
-	for (int i = 0; i < objCnt; i++) {
-		if (others[i] == this) continue;
-
-		Vector player(x, y);
-		if (player.distanceTo(others[i]->x, others[i]->y) <= radius) 
-		{
-			spawnBullet(this->x + 2, this->y - 50, BULLET_SPEED);
-			return true;
-		}
-			
-		return false;
-
-	}
+	// not used anymore
+	return false;
 }
 
 void Player::onCollisionEnter(gameObject* other) 
 {
+	if (other->getClassName() == "Block")
+		return;
+
+	if (Bullet* bullet = dynamic_cast<Bullet*>(other))
+		bullet->die();
+}
+
+std::string Player::getClassName()
+{
+	return "Player";
 }
