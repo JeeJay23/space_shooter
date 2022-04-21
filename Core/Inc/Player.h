@@ -2,15 +2,21 @@
 #include "gameObject.h"
 #include "Controller.h"
 #include "globals.h"
+#include "protocol.h"
 #include <cmath>
+
+class GameEngine;
 
 class Player : public gameObject
 {
 private:
 	double curFuel = PLAYER_MAXFUEL;
 
+	GameEngine *engine;
+
 	int fireCooldown = 0;
 	int bullets = 0;
+
 
 	int isGrounded = 0;
 	bool facingRight = true;
@@ -24,6 +30,7 @@ private:
 
 public:
 	Controller* controller;
+	int points = 0;
 	void move();
 
 	Player(
@@ -34,13 +41,15 @@ public:
 			Vector spd,
 			Controller* controller,
 			gameObject** toSpawn,
-			int* spawnCnt
+			int* spawnCnt,
+			GameEngine *engine
 			)
 		: gameObject(x, y, radius, type)
 		, controller(controller)
 		, curVelocity(spd)
 		, toSpawn(toSpawn)
 		, toSpawnCnt(spawnCnt)
+		, engine(engine)
 	{};
 
 	Player()
@@ -53,6 +62,8 @@ public:
 
 	bool checkCollision(gameObject**, int);
 	void onCollisionEnter(gameObject*);
+
+	~Player(){};
 };
 
 

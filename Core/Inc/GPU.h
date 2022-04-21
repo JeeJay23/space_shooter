@@ -6,11 +6,13 @@
 class GPU
 {
 private:
-	Protocol *prot;
+
 
 public:
 	int width = SCREEN_WIDTH;
 	int height = SCREEN_HEIGHT;
+
+	Protocol *prot;
 
 	GPU(Protocol *prot) : prot(prot) {}
 	~GPU();

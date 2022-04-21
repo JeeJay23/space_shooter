@@ -15,10 +15,11 @@
 
 class GameEngine {
 private:
-	GPU *gpu;
+
 
 public:
 	GameEngine(GPU *gpu);
+	GPU *gpu;
 	virtual ~GameEngine();
 
 	gameObject *objects[MAX_GAMEOBJ_COUNT];

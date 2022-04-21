@@ -3,6 +3,9 @@
 
 void Bullet::move()
 {
+	if(isDead)
+		return;
+
 	if (x > SCREEN_WIDTH)
 		x = 0;
 
@@ -39,6 +42,8 @@ void Bullet::die()
 	curVelocity.x = 0;
 	curVelocity.y = 0;
 	x = -100;
+	(*playerBulletCount)--;
+	isDead = true;
 }
 
 void Bullet::onCollisionEnter(gameObject* other)

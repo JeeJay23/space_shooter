@@ -18,11 +18,14 @@ const double PLAYER_MAXSPEED = 10;
 const double PLAYER_GRAVITY = 1;
 const double PLAYER_DRAG = 0.8;
 const int PLAYER_RADIUS = 32;
+const int PLAYER1_RESPAWNX= 100;
+const int PLAYER2_RESPAWNX= 600;
+const int PLAYER_RESPAWNY= 100;
 
 
 // firing
 const int PLAYER_FIRE_COOLDOWN = 15; // in 1/60 seconds
-const int PLAYER_MAX_BULLETS = 10;
+const int PLAYER_MAX_BULLETS = 4;
 
 // jetpack
 const double PLAYER_MAXFUEL = 100;
@@ -30,7 +33,7 @@ const double PLAYER_FUELDRAIN = .5f;
 
 // Bullets
 const int BULLET_SPEED = 20;
-const int BULLET_TTL = 1; // in seconds
+const int BULLET_TTL = 10; // in seconds
 const double BULLET_GRAVITY = .2;
 const double BULLET_INITIAL_UPWARDS_MOMENTUM = 5;
 

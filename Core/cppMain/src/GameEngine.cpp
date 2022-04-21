@@ -52,15 +52,41 @@ void GameEngine::loop()
 	    }
 
 	toAddCount = 0;
-
+	cleanup();
 	// send to fpga
 	gpu->draw(objects, objCount);
 }
 
 void GameEngine::fixedUpdate() {
-	for (int i = 0; i < objCount; i++){
-		objects[i]->move();
-	}
+	 for (int i = 0; i < objCount; i++) {
+			objects[i]->move();
+
+	        if (i == objCount - 1)
+	            break;
+
+	        for (int j = 0; j < objCount; j++) {
+	            /*if (objects[j]->getClassName() == "Block")
+	                continue;*/
+	            if (i == j)
+	                continue;
+
+	            Vector pos(objects[i]->x, objects[i]->y);
+	            double distance = pos.distanceTo(objects[j]->x, objects[j]->y);
+	            //printf("%lf \n", distance);
+	            if (distance <= objects[i]->radius)
+	            {
+	                //TODO
+
+	                objects[i]->onCollisionEnter(objects[j]);
+	            }
+	        }
+	    }
+
+	    for (int i = 0; i < toAddCount; i++) {
+	        addObj(toAdd[i]);
+	    }
+
+	    toAddCount = 0;
 }
 
 void GameEngine::cleanup() {

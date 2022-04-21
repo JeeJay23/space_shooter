@@ -32,6 +32,43 @@ void Protocol::drawSprite(unsigned int sprite_x, unsigned int sprite_y, unsigned
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 }
 
+void Protocol::drawScore(unsigned int scoreP1, unsigned int scoreP2)
+{
+	uint8_t buff[9] = {0b11101111,
+						5,
+						0b00000010,
+						0b00000010,
+						(uint8_t)scoreP1 & 0xff,
+						(uint8_t)scoreP2 & 0xff,
+						0xff,
+						0xff,
+						0b11111110
+	};
+
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(spi1, buff, sizeof(buff), 100);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+}
+
+void Protocol::drawMenu(unsigned int scoreP1, unsigned int scoreP2)
+{
+	uint8_t buff[9] = {0b11101111,
+						3,
+						0b00000010,
+						0b00000001,
+						(uint8_t)scoreP1 & 0xff,
+						(uint8_t)scoreP2 & 0xff,
+						0xff,
+						0xff,
+						0b11111110
+	};
+
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(spi1, buff, sizeof(buff), 100);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+}
+
+
 
 
 

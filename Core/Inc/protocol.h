@@ -18,6 +18,8 @@ public:
 	~Protocol();
 
 	void drawSprite(unsigned int, unsigned int, unsigned int);
+	void drawScore(unsigned int, unsigned int);
+	void drawMenu(unsigned int, unsigned int);
 	void drawLine();
 	void playAudio();
 	unsigned int spriteX = 500, spriteY = 300;

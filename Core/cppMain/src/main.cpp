@@ -26,7 +26,8 @@ void cppMain(SPI_HandleTypeDef *hspi)
 			Vector(0,0),
 			&controllerA,
 			engine.toAdd,
-			&engine.toAddCount
+			&engine.toAddCount,
+			&engine
 	);
 
 	Player player2(
@@ -37,7 +38,8 @@ void cppMain(SPI_HandleTypeDef *hspi)
 			Vector(0,0),
 			&controllerB,
 			engine.toAdd,
-			&engine.toAddCount
+			&engine.toAddCount,
+			&engine
 	);
 
 	engine.addPlayer(&player);
@@ -47,6 +49,7 @@ void cppMain(SPI_HandleTypeDef *hspi)
 
 	for(;;){
 		//engine.spiTrans();
+		const int timeDelay = 20;
 
 		// Read controller values.
 		int starttick = HAL_GetTick();
@@ -56,9 +59,13 @@ void cppMain(SPI_HandleTypeDef *hspi)
 //		protocol.drawSprite(200,400, 4);
 //		protocol.drawSprite(400,100, 5);
 
+
 		int stoptick = HAL_GetTick();
 
-		HAL_Delay(20-(stoptick-starttick));
+		if(stoptick-starttick > timeDelay)
+			continue;
+
+		HAL_Delay(timeDelay-(stoptick-starttick));
 
 	}
 }

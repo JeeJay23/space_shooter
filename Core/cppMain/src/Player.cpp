@@ -1,11 +1,15 @@
 #include "Player.h"
 #include "Bullet.h"
+#include "GameEngine.h"
+
+
 
 void Player::spawnBullet(int x, int y, int speed)
 {
-	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM), sprBullet);
+	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM), sprBullet, &bullets);
 	toSpawn[*toSpawnCnt] = toAdd; // array is checked every update. TODO move this logic to gameEngine
 	(*toSpawnCnt)++;
+	bullets++;
 }
 
 int Player::map(int iEnd, int oEnd, int input)
@@ -29,9 +33,8 @@ void Player::move()
 
 		isGrounded = 0;
 	}
-	if (controller->b) {
-		curVelocity.y += PLAYER_MOVESPEED;
-	}
+
+
 	if (controller->left) {
 		curVelocity.x += -PLAYER_MOVESPEED;
 		facingRight = false;
@@ -42,7 +45,7 @@ void Player::move()
 	}
 
 	// shoot bullet
-	if (controller->a &&
+	if (controller->b &&
 		fireCooldown == 0 && 
 		bullets < PLAYER_MAX_BULLETS) {
 
@@ -53,6 +56,8 @@ void Player::move()
 		spawnBullet(sX, y, (facingRight) ? BULLET_SPEED : - BULLET_SPEED);
 	}
 
+	if(controller->start)
+		engine->gpu->prot->drawMenu(0,0);
 	// if player is grounded, apply vertical drag
 	if (isGrounded) {
 		if (curVelocity.x > 0)
@@ -108,6 +113,22 @@ bool Player::checkCollision(gameObject** others, int objCnt)
 
 void Player::onCollisionEnter(gameObject* other) 
 {
-	if (Bullet* bullet = dynamic_cast<Bullet*>(other))
+	if (Bullet* bullet = dynamic_cast<Bullet*>(other)){
 		bullet->die();
+		if(type == sprPlayer1){
+			x = PLAYER1_RESPAWNX;
+			y = PLAYER_RESPAWNY;
+			points++;
+		}
+		else if(type == sprPlayer2)		{
+			x = PLAYER2_RESPAWNX;
+			y = PLAYER_RESPAWNY;
+			points++;
+		}
+
+
+		isGrounded = 0;
+	}
+
 }
+
