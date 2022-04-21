@@ -62,3 +62,15 @@ void GameEngine::fixedUpdate() {
 		objects[i]->move();
 	}
 }
+
+void GameEngine::cleanup() {
+}
+
+void GameEngine::deleteAt(int toDelete) {
+    delete(objects[toDelete]); // free memory
+    objCount--;
+
+    for (int i = toDelete; i < objCount; i++) {
+        objects[i] = objects[i + 1]; // shift array to the left
+    }
+}

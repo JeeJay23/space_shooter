@@ -32,6 +32,8 @@ public:
 	void addObj(gameObject* toAdd);
 	void loop();
 	void fixedUpdate();
+	void cleanup();
+	void deleteAt(int);
 };
 
 #endif /* GAMEENGINE_H_ */
