@@ -1,10 +1,9 @@
 #include "Player.h"
 #include "Bullet.h"
-#include <iostream>
 
 void Player::spawnBullet(int x, int y, int speed)
 {
-	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM));
+	Bullet* toAdd = new Bullet(x, y, Vector(speed, -BULLET_INITIAL_UPWARDS_MOMENTUM), sprBullet);
 	toSpawn[*toSpawnCnt] = toAdd; // array is checked every update. TODO move this logic to gameEngine
 	(*toSpawnCnt)++;
 }
@@ -22,7 +21,7 @@ void Player::move()
 		curVelocity.y += PLAYER_GRAVITY;
 
 	// apply input logic
-	if (controller->up) {
+	if (controller->a) {
 		if (curFuel > 0) {
 			curVelocity.y += -PLAYER_MOVESPEED;
 			curFuel -= PLAYER_FUELDRAIN;
@@ -30,7 +29,7 @@ void Player::move()
 
 		isGrounded = 0;
 	}
-	if (controller->down) {
+	if (controller->b) {
 		curVelocity.y += PLAYER_MOVESPEED;
 	}
 	if (controller->left) {
@@ -43,14 +42,14 @@ void Player::move()
 	}
 
 	// shoot bullet
-	if (controller->btnA && 
+	if (controller->a &&
 		fireCooldown == 0 && 
 		bullets < PLAYER_MAX_BULLETS) {
 
 		const int offset = 20;
 
 		fireCooldown = PLAYER_FIRE_COOLDOWN;
-		double sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE + offset : x - PLACEHOLDER_SPR_SIZE - offset;
+		long int sX = (facingRight) ? x + PLACEHOLDER_SPR_SIZE + offset : x - PLACEHOLDER_SPR_SIZE - offset;
 		spawnBullet(sX, y, (facingRight) ? BULLET_SPEED : - BULLET_SPEED);
 	}
 
@@ -61,7 +60,7 @@ void Player::move()
 		else if (curVelocity.x < 0)
 			curVelocity.x += PLAYER_DRAG;
 
-		if (abs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
+		if (fabs(curVelocity.x) < PLAYER_MINSPEED) // deadzone
 			curVelocity.x = 0;
 
 		curFuel = PLAYER_MAXFUEL;
@@ -79,7 +78,6 @@ void Player::move()
 		x = SCREEN_WIDTH;
 
 	int colIndex = map(SCREEN_WIDTH, groundColumnsAmount, x);
-	std::printf("current column: %i\n", colIndex);
 
 	// Ground
 	if (y > SCREEN_HEIGHT - PLACEHOLDER_SPR_SIZE*2) {
@@ -110,14 +108,6 @@ bool Player::checkCollision(gameObject** others, int objCnt)
 
 void Player::onCollisionEnter(gameObject* other) 
 {
-	if (other->getClassName() == "Block")
-		return;
-
 	if (Bullet* bullet = dynamic_cast<Bullet*>(other))
 		bullet->die();
-}
-
-std::string Player::getClassName()
-{
-	return "Player";
 }
