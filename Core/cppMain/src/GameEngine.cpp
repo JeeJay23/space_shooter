@@ -64,6 +64,9 @@ void GameEngine::fixedUpdate() {
 }
 
 void GameEngine::cleanup() {
+    for (int i = 0; i < objCount; i++)
+		if (objects[i]->x < -20 || objects[i]->x > SCREEN_WIDTH + 20)
+            deleteAt(i);
 }
 
 void GameEngine::deleteAt(int toDelete) {
