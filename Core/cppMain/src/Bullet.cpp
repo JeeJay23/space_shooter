@@ -1,16 +1,22 @@
 #include "Bullet.h"
 #include "globals.h"
 
+int Bullet::getColIndex(int input)
+{
+	double slope = (double)(groundColumnsAmount) / (double)(SCREEN_WIDTH);
+	return slope * input;
+}
+
 void Bullet::move()
 {
 	if(isDead)
 		return;
 
-	if (x > SCREEN_WIDTH)
-		x = 0;
+	if (x + PLACEHOLDER_SPR_SIZE_HALF > SCREEN_WIDTH)
+		x = PLACEHOLDER_SPR_SIZE_HALF;
 
-	if (x < 0)
-		x = SCREEN_WIDTH;
+	if (x - PLACEHOLDER_SPR_SIZE_HALF < 0)
+		x = SCREEN_WIDTH - PLACEHOLDER_SPR_SIZE_HALF;
 
 	if (y > SCREEN_HEIGHT)
 		die();
@@ -19,6 +25,20 @@ void Bullet::move()
 		die();
 
 	 curVelocity.y += BULLET_GRAVITY;
+
+	int colIndex = getColIndex(x+PLACEHOLDER_SPR_SIZE_HALF);
+
+	if (colIndex > groundColumnsAmount - 1) {
+		colIndex = groundColumnsAmount - 1;
+	}
+
+	if (colIndex < 0) {
+		colIndex = 0;
+	}
+
+	if (y + PLACEHOLDER_SPR_SIZE > groundColumns[colIndex]){
+		die();
+	}
 
 	x += curVelocity.x;
 	y += curVelocity.y;

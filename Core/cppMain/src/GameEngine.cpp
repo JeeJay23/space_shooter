@@ -1,26 +1,14 @@
-/*
- * GameEngine.cpp
- *
- *  Created on: Mar 9, 2022
- *      Author: jvjad
- */
-
 #include "GameEngine.h"
-#include "gameObject.h"
 
-GameEngine::GameEngine(GPU *gpu)
-	:	gpu(gpu)
-{
-	// TODO Auto-generated constructor stub
-
-//	memset(objects, 0, MAX_GAMEOBJ_COUNT*sizeof(gameObject*));
+GameEngine::GameEngine(GPU *gpu) :
+		gpu(gpu) {
 }
 
 GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
-	delete(gpu);
-	delete(controllerA);
-	delete(controllerB);
+	delete (gpu);
+	delete (controllerA);
+	delete (controllerB);
 
 	// TODO delete all objects
 }
@@ -30,16 +18,15 @@ void GameEngine::addPlayer(Player *player) {
 	objCount++;
 }
 
-void GameEngine::addObj(gameObject* toAdd)
-{
-    if (objCount >= MAX_GAMEOBJ_COUNT - 1) return;
+void GameEngine::addObj(gameObject *toAdd) {
+	if (objCount >= MAX_GAMEOBJ_COUNT - 1)
+		return;
 
-    objects[objCount] = toAdd;
-    objCount++;
+	objects[objCount] = toAdd;
+	objCount++;
 }
 
-void GameEngine::loop()
-{
+void GameEngine::loop() {
 	// update inputs
 	controllerA->update();
 	controllerB->update();
@@ -48,8 +35,8 @@ void GameEngine::loop()
 	fixedUpdate();
 
 	for (int i = 0; i < toAddCount; i++) {
-	        addObj(toAdd[i]);
-	    }
+		addObj(toAdd[i]);
+	}
 
 	toAddCount = 0;
 	cleanup();
@@ -58,48 +45,47 @@ void GameEngine::loop()
 }
 
 void GameEngine::fixedUpdate() {
-	 for (int i = 0; i < objCount; i++) {
-			objects[i]->move();
+	for (int i = 0; i < objCount; i++) {
+		objects[i]->move();
 
-	        if (i == objCount - 1)
-	            break;
+		if (i == objCount - 1)
+			break;
 
-	        for (int j = 0; j < objCount; j++) {
-	            /*if (objects[j]->getClassName() == "Block")
-	                continue;*/
-	            if (i == j)
-	                continue;
+		for (int j = 0; j < objCount; j++) {
+			/*if (objects[j]->getClassName() == "Block")
+			 continue;*/
+			if (i == j)
+				continue;
 
-	            Vector pos(objects[i]->x, objects[i]->y);
-	            double distance = pos.distanceTo(objects[j]->x, objects[j]->y);
-	            //printf("%lf \n", distance);
-	            if (distance <= objects[i]->radius)
-	            {
-	                //TODO
+			Vector pos(objects[i]->x, objects[i]->y);
+			double distance = pos.distanceTo(objects[j]->x, objects[j]->y);
+			//printf("%lf \n", distance);
+			if (distance <= objects[i]->radius) {
+				//TODO
 
-	                objects[i]->onCollisionEnter(objects[j]);
-	            }
-	        }
-	    }
+				objects[i]->onCollisionEnter(objects[j]);
+			}
+		}
+	}
 
-	    for (int i = 0; i < toAddCount; i++) {
-	        addObj(toAdd[i]);
-	    }
+	for (int i = 0; i < toAddCount; i++) {
+		addObj(toAdd[i]);
+	}
 
-	    toAddCount = 0;
+	toAddCount = 0;
 }
 
 void GameEngine::cleanup() {
-    for (int i = 0; i < objCount; i++)
+	for (int i = 0; i < objCount; i++)
 		if (objects[i]->x < -20 || objects[i]->x > SCREEN_WIDTH + 20)
-            deleteAt(i);
+			deleteAt(i);
 }
 
 void GameEngine::deleteAt(int toDelete) {
-    delete(objects[toDelete]); // free memory
-    objCount--;
+	delete (objects[toDelete]); // free memory
+	objCount--;
 
-    for (int i = toDelete; i < objCount; i++) {
-        objects[i] = objects[i + 1]; // shift array to the left
-    }
+	for (int i = toDelete; i < objCount; i++) {
+		objects[i] = objects[i + 1]; // shift array to the left
+	}
 }

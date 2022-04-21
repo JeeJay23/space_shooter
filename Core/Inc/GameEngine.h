@@ -1,24 +1,18 @@
-/*
- * GameEngine.h
- *
- *  Created on: Mar 9, 2022
- *      Author: jvjad
- */
 
 #ifndef GAMEENGINE_H_
 #define GAMEENGINE_H_
 
-#include "Controller.h"
 #include "GPU.h"
-#include "gameObject.h"
+#include "Controller.h"
 #include "Player.h"
+#include "globals.h"
 
-class GameEngine {
+class GameEngine
+{
 private:
-
-
 public:
 	GameEngine(GPU *gpu);
+
 	GPU *gpu;
 	virtual ~GameEngine();
 
@@ -38,3 +32,5 @@ public:
 };
 
 #endif /* GAMEENGINE_H_ */
+
+

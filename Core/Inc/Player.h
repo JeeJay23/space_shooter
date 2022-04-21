@@ -16,8 +16,6 @@ private:
 
 	int fireCooldown = 0;
 	int bullets = 0;
-
-
 	int isGrounded = 0;
 	bool facingRight = true;
 
@@ -26,7 +24,7 @@ private:
 	int* toSpawnCnt;
 
 	void spawnBullet(int, int, int);
-	int map(int, int, int);
+	int getColIndex(int);
 
 public:
 	Controller* controller;
@@ -59,11 +57,9 @@ public:
 		, toSpawn(nullptr)
 		, toSpawnCnt(nullptr)
 	{};
-
 	bool checkCollision(gameObject**, int);
 	void onCollisionEnter(gameObject*);
 
-	~Player(){};
 };
 
 
