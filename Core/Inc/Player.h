@@ -27,6 +27,7 @@ private:
 	int getColIndex(int);
 
 public:
+
 	Controller* controller;
 	int points = 0;
 	void move();

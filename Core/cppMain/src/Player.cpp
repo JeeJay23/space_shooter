@@ -79,8 +79,8 @@ void Player::move() {
 	curVelocity.y = fmin(PLAYER_MAXSPEED,
 			fmax(curVelocity.y, -PLAYER_MAXSPEED));
 
-	int colIndexLeft = getColIndex(x);
-	int colIndexRight = getColIndex(x + PLACEHOLDER_SPR_SIZE);
+	int colIndexLeft = getColIndex(x - PLACEHOLDER_SPR_SIZE_HALF);
+	int colIndexRight = getColIndex(x + PLACEHOLDER_SPR_SIZE_HALF);
 
 	if (colIndexLeft < 0) {
 		colIndexLeft = 0;
@@ -91,14 +91,14 @@ void Player::move() {
 	}
 
 	// evaluate groundedness
-	isGrounded = !(y + PLACEHOLDER_SPR_SIZE < groundColumns[colIndexLeft]);
+	isGrounded = !(y + PLACEHOLDER_SPR_SIZE_HALF < groundColumns[colIndexLeft]);
 
 	// Ground collision
-	if (y + PLACEHOLDER_SPR_SIZE > groundColumns[colIndexLeft]) {
-		y = groundColumns[colIndexLeft] - PLACEHOLDER_SPR_SIZE;
+	if (y + PLACEHOLDER_SPR_SIZE_HALF > groundColumns[colIndexLeft]) {
+		y = groundColumns[colIndexLeft] - PLACEHOLDER_SPR_SIZE_HALF;
 		curVelocity.y = 0; // cancel vertical velocity
-	} else if (y + PLACEHOLDER_SPR_SIZE > groundColumns[colIndexRight]) {
-		y = groundColumns[colIndexRight] - PLACEHOLDER_SPR_SIZE;
+	} else if (y + PLACEHOLDER_SPR_SIZE_HALF > groundColumns[colIndexRight]) {
+		y = groundColumns[colIndexRight] - PLACEHOLDER_SPR_SIZE_HALF;
 		curVelocity.y = 0; // cancel vertical velocity
 	}
 
@@ -116,16 +116,16 @@ void Player::move() {
 	int nX = x + curVelocity.x;
 	int nY = y + curVelocity.y;
 
-	int nextColIndexLeft = getColIndex(nX);
-	int nextColIndexRight = getColIndex(nX + PLACEHOLDER_SPR_SIZE);
+	int nextColIndexLeft = getColIndex(nX - PLACEHOLDER_SPR_SIZE_HALF);
+	int nextColIndexRight = getColIndex(nX + PLACEHOLDER_SPR_SIZE_HALF);
 
-	if (nX + PLACEHOLDER_SPR_SIZE > SCREEN_WIDTH) {
-		nX = 0;
+	if (nX + PLACEHOLDER_SPR_SIZE_HALF > SCREEN_WIDTH) {
+		nX = PLACEHOLDER_SPR_SIZE_HALF;
 		nextColIndexRight = 0;
 	}
 
-	if (nX < 0) {
-		nX = SCREEN_WIDTH - PLACEHOLDER_SPR_SIZE;
+	if (nX - PLACEHOLDER_SPR_SIZE_HALF < 0) {
+		nX = SCREEN_WIDTH - PLACEHOLDER_SPR_SIZE_HALF;
 		nextColIndexLeft = groundColumnsAmount - 1;
 	}
 
@@ -157,7 +157,6 @@ void Player::onCollisionEnter(gameObject *other) {
 			y = PLAYER_RESPAWNY;
 			points++;
 		}
-
 		isGrounded = 0;
 	}
 }
